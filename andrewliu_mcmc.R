@@ -70,7 +70,7 @@ runMCMC <- function(ID, data) {
   if (missing(ID)) { args <- commandArgs(TRUE) ; ID <- as.numeric(args[1]) }
   outdir <- sprintf("out-%i", ID) ; dir.create(outdir)
   p_init = runif(1,0.02,0.98)
-  n_init = rnbinom(1, size=max(data), prob=p_init) + lower
+  n_init = rnbinom(1, size=max(data), prob=p_init) + max(data)
   results <- margN.MCMC(init=c(n_init, p_init),data=data,simsize=20000)
   save(results, file=sprintf("%s/output.rda", outdir))
 }
