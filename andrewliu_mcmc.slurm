@@ -6,4 +6,4 @@
 #SBATCH -t 20
 
 # And the code to run:
-Rscript -e "source('andrewliu_mcmc.R') ; " ${SLURM_ARRAY_TASK_ID}
+Rscript -e "source('andrewliu_mcmc.R') ; runMCMC(data=Impala) " ${SLURM_ARRAY_TASK_ID}

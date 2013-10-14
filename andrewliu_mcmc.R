@@ -66,12 +66,11 @@ margN.MCMC<-function(init,data,simsize=1000){
 }
 
 #MCMC draws
-Ndraw<-margN.MCMC(init=c(100,0.1),data=Impala,simsize=20000)
- 
-#gridding procedure for sanity check
-margNprob<-sapply(seq(max(Impala),20000,1),margN,y=Impala)
-margNprob<-margNprob-max(margNprob)
-Ndrawgrid<-sample(seq(max(Impala),20000,1),size=10000,replace=T,prob=exp(margNprob))
- 
-print(quantile(Ndrawgrid, prob=seq(0.05, 0.95, 0.1)))
-print(quantile(Ndraw[,1], prob=seq(0.05, 0.95, 0.1)))
+runMCMC <- function(ID, data) {
+  if (missing(ID)) { args <- commandArgs(TRUE) ; ID <- as.numeric(args[1]) }
+  outdir <- sprintf("out-%i", ID) ; dir.create(outdir)
+  p_init = runif(1,0.02,0.98)
+  n_init = rnbinom(1, size=max(data), prob=p_init) + lower
+  results <- margN.MCMC(init=c(n_init, p_init),data=data,simsize=20000)
+  save(results, file=sprintf("%s/output.rda", outdir))
+}
