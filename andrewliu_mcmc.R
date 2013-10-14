@@ -10,11 +10,9 @@ Waterbucks<-c(53,57,66,67,72)
 
 ## marginal posterior of N
 margN<-function(N,y){ 
-  if(N>=max(y)) {
-    lgamma(length(y)*N-sum(y)+1)-lgamma(length(y)*N+2)+sum(lchoose(N,y))-log(N)
-  }else{
-    -Inf
-  }
+ ifelse(N >= max(y),
+         sapply(FUN=function(x) lgamma(length(y)*x-sum(y)+1)-lgamma(length(y)*x+2)+sum(lfactorial(x)-lfactorial(x-y))-log(x), X=N),
+         -Inf)
 }
 
 ####MCMC Sampler
